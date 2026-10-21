@@ -1,0 +1,29 @@
+/*
+Copyright (c) {{ year }} Apache-2.0 license
+
+@file    routes.go
+@author  {{ user_name }}
+@brief   API route definitions
+*/
+
+package routes
+
+import (
+    "net/http"
+
+    "github.com/gin-gonic/gin"
+)
+
+// Register sets up all API routes.
+func Register(r *gin.Engine) {
+    api := r.Group("/api/v1")
+    {
+        api.GET("/example", getExample)
+    }
+}
+
+func getExample(c *gin.Context) {
+    c.JSON(http.StatusOK, gin.H{
+        "message": "{{ project_name }}",
+    })
+}

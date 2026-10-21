@@ -1,0 +1,27 @@
+/*
+Copyright (c) {{ year }} Apache-2.0 license
+
+@file    database.go
+@author  {{ user_name }}
+@brief   Database connection and setup
+*/
+
+package database
+
+import (
+    "gorm.io/driver/sqlite"
+    "gorm.io/gorm"
+)
+
+// Connect opens the SQLite database and runs auto-migrations.
+func Connect() (*gorm.DB, error) {
+    db, err := gorm.Open(sqlite.Open("{{ project_slug }}.db"), &gorm.Config{})
+    if err != nil {
+        return nil, err
+    }
+
+    // TODO add model migrations
+    // db.AutoMigrate(&YourModel{})
+
+    return db, nil
+}

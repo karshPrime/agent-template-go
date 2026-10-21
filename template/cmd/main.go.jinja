@@ -1,0 +1,143 @@
+/*
+Copyright (c) {{ year }} Apache-2.0 license
+
+@file    main.go
+@author  {{ user_name }}
+@brief   Main entry point
+*/
+
+package main
+
+{% if app_type == 'CLI' %}
+import (
+    "fmt"
+    "os"
+
+    "github.com/spf13/cobra"
+{% if include_database %}
+    "{{ go_module }}/internal/database"
+{% endif %}
+)
+
+var rootCmd = &cobra.Command{
+    Use:   "{{ project_slug }}",
+    Short: "{{ project_description }}",
+    Run: func(cmd *cobra.Command, args []string) {
+{% if include_database %}
+        db, err := database.Connect()
+        if err != nil {
+            fmt.Fprintf(os.Stderr, "database error: %v\n", err)
+            os.Exit(1)
+        }
+        _ = db
+{% endif %}
+        // TODO add code...
+        fmt.Println("{{ project_name }}")
+    },
+}
+
+func main() {
+    if err := rootCmd.Execute(); err != nil {
+        fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+        os.Exit(1)
+    }
+}
+{% elif app_type == 'TUI' %}
+import (
+    "fmt"
+    "os"
+
+    tea "github.com/charmbracelet/bubbletea"
+{% if include_database %}
+    "{{ go_module }}/internal/database"
+{% endif %}
+)
+
+// Model holds the application state.
+type Model struct {
+    quitting bool
+}
+
+func initialModel() Model {
+    return Model{}
+}
+
+func (m Model) Init() tea.Cmd {
+    return nil
+}
+
+func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+    switch msg := msg.(type) {
+    case tea.KeyMsg:
+        switch msg.String() {
+        case "q", "ctrl+c":
+            m.quitting = true
+            return m, tea.Quit
+        }
+    }
+    return m, nil
+}
+
+func (m Model) View() string {
+    if m.quitting {
+        return ""
+    }
+    return "{{ project_name }}\n\nPress 'q' to quit.\n"
+}
+
+func main() {
+{% if include_database %}
+    db, err := database.Connect()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "database error: %v\n", err)
+        os.Exit(1)
+    }
+    _ = db
+{% endif %}
+
+    p := tea.NewProgram(initialModel())
+    if _, err := p.Run(); err != nil {
+        fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+        os.Exit(1)
+    }
+}
+{% elif app_type == 'WebServer' %}
+import (
+    "log"
+    "net/http"
+    "os"
+
+    "github.com/gin-gonic/gin"
+{% if include_database %}
+    "{{ go_module }}/internal/database"
+{% endif %}
+)
+
+func main() {
+{% if include_database %}
+    db, err := database.Connect()
+    if err != nil {
+        log.Fatalf("database error: %v", err)
+    }
+    _ = db
+{% endif %}
+
+    r := gin.Default()
+
+    r.GET("/health", func(c *gin.Context) {
+        c.JSON(http.StatusOK, gin.H{"status": "ok"})
+    })
+
+    // TODO add routes...
+
+    port := os.Getenv("PORT")
+    if port == "" {
+        port = "8080"
+    }
+
+    log.Printf("Starting {{ project_name }} on :%s", port)
+    if err := r.Run(":" + port); err != nil {
+        log.Fatalf("server error: %v", err)
+    }
+}
+{% endif %}
