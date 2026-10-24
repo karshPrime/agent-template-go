@@ -7,3 +7,4 @@
 * feature/run-script: generated projects ship a run.sh for building, formatting, testing and release builds, with release targets chosen at generation.
 * feature/github-ci: generated projects ship the shared GitHub CI and a VERSION file, which copier update leaves alone.
 * fix/project-builds: generated projects build, test and cross-compile out of the box, with a go.mod, gofmt-clean code, a pure Go SQLite driver and a dev container that installs Go.
+* chore/renovate-grouping: Renovate batches minor, patch and digest updates into one weekly pull request and reminds the reviewer to bump VERSION.
