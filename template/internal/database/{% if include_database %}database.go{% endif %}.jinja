@@ -9,19 +9,19 @@ Copyright (c) {{ year }} Apache-2.0 license
 package database
 
 import (
-    "gorm.io/driver/sqlite"
-    "gorm.io/gorm"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 // Connect opens the SQLite database and runs auto-migrations.
 func Connect() (*gorm.DB, error) {
-    db, err := gorm.Open(sqlite.Open("{{ project_slug }}.db"), &gorm.Config{})
-    if err != nil {
-        return nil, err
-    }
+	db, err := gorm.Open(sqlite.Open("{{ project_slug }}.db"), &gorm.Config{})
+	if err != nil {
+		return nil, err
+	}
 
-    // TODO add model migrations
-    // db.AutoMigrate(&YourModel{})
+	// TODO add model migrations
+	// db.AutoMigrate(&YourModel{})
 
-    return db, nil
+	return db, nil
 }
