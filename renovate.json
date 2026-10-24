@@ -14,6 +14,17 @@
   "automerge": false,
   "semanticCommits": "enabled",
   "semanticCommitType": "chore",
+  "prBodyNotes": [
+    "Bump `VERSION` on this branch before merging: `Y` for minor and patch updates, `X` if a major update breaks existing projects."
+  ],
+  "packageRules": [
+    {
+      "description": "one weekly pull request for every non-major update, so VERSION is bumped once",
+      "matchUpdateTypes": ["minor", "patch", "pin", "pinDigest", "digest"],
+      "groupName": "non-major dependencies",
+      "groupSlug": "non-major"
+    }
+  ],
   "customManagers": [
     {
       "customType": "regex",

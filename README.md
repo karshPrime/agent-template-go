@@ -50,7 +50,7 @@ GitHub Actions (`.github/workflows/ci.yml`) runs two jobs:
 * **version:** on every pull request and push to `main`, checks that `VERSION` holds a single `vX.Y.Z` line.
 * **tag:** on push to `main`, tags the merged commit with the version in `VERSION`, so existing projects can move to it with `copier update`. If the tag already exists, nothing is tagged.
 
-The workflow is read-only apart from the tag job, which needs write access to create the tag. It runs on `pull_request`, never `pull_request_target`, so code from a fork never runs with this repository's credentials. Actions are pinned to commit SHAs, and Renovate (`renovate.json`) proposes updates to them weekly.
+The workflow is read-only apart from the tag job, which needs write access to create the tag. It runs on `pull_request`, never `pull_request_target`, so code from a fork never runs with this repository's credentials. Actions are pinned to commit SHAs, and Renovate (`renovate.json`) proposes updates to them weekly. Minor, patch and digest updates come as one grouped pull request and majors on their own; Renovate never touches `VERSION`, so bump it on the pull request before merging.
 
 
 ### Project Tasks
