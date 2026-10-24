@@ -22,7 +22,7 @@ $ copier copy --trust --vcs-ref=go git@github.com:karnull/templates path/to/proj
 ```
 * **Project Description:** Answer the Copier prompt with an optional plain‑text description of your project.
 * **Library Pack:** Optional selection of libraries to include in the project.
-* **Release Targets:** Platforms `./run.sh --release` builds for, or none. `windows-arm32` is not offered, as Go no longer supports it.
+* **Release Targets:** Platforms `make release` builds for, or none. `windows-arm32` is not offered, as Go no longer supports it.
 * The `--trust` option is required because the template runs `git` and `go mod tidy`. Without Go installed, run `go mod tidy` in the dev container afterwards and commit `go.mod` and `go.sum`.
 
 
@@ -55,16 +55,16 @@ The workflow is read-only apart from the tag job, which needs write access to cr
 
 ### Project Tasks
 
-Every generated project has a `run.sh` at its root:
-* `./run.sh --build` builds the binary into `build/`.
-* `./run.sh --format` formats the Go sources; `--format-dry-run` lists unformatted files and fails if there are any.
-* `./run.sh --test` runs the tests.
-* `./run.sh --release` cross-compiles one binary per release target into `dist/`.
+Every generated project has a `Makefile` at its root:
+* `make build` builds the binary into `build/`.
+* `make format` formats the Go sources; `make format-dry-run` lists unformatted files and fails if there are any.
+* `make test` runs the tests.
+* `make release` cross-compiles one binary per release target into `dist/`, using `scripts/release.sh`.
 
 
 ### GitHub CI
 
-Generated projects ship with the shared workflow from [template-github-ci](https://github.com/karshosphere/template-github-ci), vendored into `template/.github/`. It expects the project's `run.sh` and `.devcontainer/`, requires a `VERSION` bump on every pull request, and publishes a GitHub release on each merge to main. They also ship a `renovate.json` that extends the same shared Renovate settings; the project owns it once created, so it can add its own rules.
+Generated projects ship with the shared workflow from [template-github-ci](https://github.com/karshosphere/template-github-ci), vendored into `template/.github/`. It expects the project's `Makefile` and `.devcontainer/`, requires a `VERSION` bump on every pull request, and publishes a GitHub release on each merge to main. They also ship a `renovate.json` that extends the same shared Renovate settings; the project owns it once created, so it can add its own rules.
 
 To bring in a newer release of the workflow, from this repository's root:
 
