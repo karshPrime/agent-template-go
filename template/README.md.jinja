@@ -23,13 +23,13 @@
 ### Build
 
 ```bash
-$ <command>
+$ ./run.sh --build
 ```
 
 ### Run
 
 ```bash
-$ <command>
+$ ./build/{{ project_slug }}
 ```
 
 
@@ -39,7 +39,14 @@ $ <command>
 ### Run all tests
 
 ```bash
-$ <command>
+$ ./run.sh --test
+```
+
+### Formatting
+
+```bash
+$ ./run.sh --format           # format in place
+$ ./run.sh --format-dry-run   # list files that need formatting
 ```
 
 {% if app_type == 'WebServer' %}
@@ -60,7 +67,9 @@ $ <command>
 
 ## Release
 
-Add details on how a release is produced. Typically done in CI, therefore descibe process by which a release build is triggered, alternatively if no CI, describe manual steps to build and release.
+`./run.sh --release` builds the project for each release target chosen when it was generated{% if release_targets | reject('equalto', 'none') | list %} ({{ release_targets | join(', ') }}){% endif %}, writing one binary per target into `dist/`. With no targets, `dist/` is left empty.
+
+The targets are set in `run.sh`, in `release_targets`.
 
 
 
