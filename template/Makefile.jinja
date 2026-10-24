@@ -1,0 +1,26 @@
+# Project tasks. CI runs format-dry-run, build, test and release.
+
+NAME := {{ project_slug }}
+RELEASE_TARGETS := {% for target in release_targets if target != 'none' %}{{ target }}{% if not loop.last %} {% endif %}{% endfor %}
+
+.PHONY: build format format-dry-run test release
+
+build:
+	go build -o build/$(NAME) ./cmd
+
+format:
+	gofmt -w .
+
+format-dry-run:
+	@unformatted="$$(gofmt -l .)"; \
+	if [ -n "$$unformatted" ]; then \
+		echo "These files need make format:" >&2; \
+		echo "$$unformatted" >&2; \
+		exit 1; \
+	fi
+
+test:
+	go test ./...
+
+release:
+	./scripts/release.sh $(NAME) $(RELEASE_TARGETS)

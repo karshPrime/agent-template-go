@@ -53,7 +53,7 @@ include_database:
   type: bool
   default: false
 
-# platforms run.sh --release builds for the GitHub release
+# platforms make release builds for the GitHub release
 release_targets:
   qmark: "\n >"
   help: "Release Targets:"
