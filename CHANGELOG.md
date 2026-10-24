@@ -13,3 +13,4 @@
 * feature/root-answers-file: generated projects keep their Copier answers in `.copier-go-answers.yml` at the root rather than in `.copier-generic-project/`; existing projects move the file once before their next update.
 * fix/dockerfile-workdir: copier update no longer conflicts on the Dockerfile; existing projects resolve it once on their next update.
 * fix/devcontainer-timezone: the dev container, and CI with it, starts on hosts that have no /etc/timezone.
+* fix/bash-history-mount: shell history in the dev container persists between sessions.
