@@ -3,9 +3,10 @@ _min_copier_version: "9.10.0"
 _subdirectory: template
 _answers_file: .copier-generic-project/.copier-go-answers.yml
 
-# the project owns its version once created
+# the project owns these once created
 _skip_if_exists:
   - VERSION
+  - renovate.json
 
 #===============================================================================
 # Interactive

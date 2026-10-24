@@ -50,7 +50,7 @@ GitHub Actions (`.github/workflows/ci.yml`) runs two jobs:
 * **version:** on every pull request and push to `main`, checks that `VERSION` holds a single `vX.Y.Z` line.
 * **tag:** on push to `main`, tags the merged commit with the version in `VERSION`, so existing projects can move to it with `copier update`. If the tag already exists, nothing is tagged.
 
-The workflow is read-only apart from the tag job, which needs write access to create the tag. It runs on `pull_request`, never `pull_request_target`, so code from a fork never runs with this repository's credentials. Actions are pinned to commit SHAs, and Renovate (`renovate.json`) proposes updates to them weekly. Minor, patch and digest updates come as one grouped pull request and majors on their own; Renovate never touches `VERSION`, so bump it on the pull request before merging.
+The workflow is read-only apart from the tag job, which needs write access to create the tag. It runs on `pull_request`, never `pull_request_target`, so code from a fork never runs with this repository's credentials. Actions are pinned to commit SHAs, and Renovate (`renovate.json`, extending the shared settings in template-github-ci) proposes updates to them weekly. Minor, patch and digest updates come as one grouped pull request and majors on their own; Renovate never touches `VERSION`, so bump it on the pull request before merging.
 
 
 ### Project Tasks
@@ -64,7 +64,7 @@ Every generated project has a `run.sh` at its root:
 
 ### GitHub CI
 
-Generated projects ship with the shared workflow from [template-github-ci](https://github.com/karshosphere/template-github-ci), vendored into `template/.github/`. It expects the project's `run.sh` and `.devcontainer/`, requires a `VERSION` bump on every pull request, and publishes a GitHub release on each merge to main.
+Generated projects ship with the shared workflow from [template-github-ci](https://github.com/karshosphere/template-github-ci), vendored into `template/.github/`. It expects the project's `run.sh` and `.devcontainer/`, requires a `VERSION` bump on every pull request, and publishes a GitHub release on each merge to main. They also ship a `renovate.json` that extends the same shared Renovate settings; the project owns it once created, so it can add its own rules.
 
 To bring in a newer release of the workflow, from this repository's root:
 
