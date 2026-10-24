@@ -124,6 +124,12 @@ module_slug:
     {{ project_slug | regex_replace('-', '_') }}
   when: false
 
+# Go module path
+go_module:
+  type: str
+  default: "{% if github_user %}github.com/{{ github_user }}/{% endif %}{{ project_slug }}"
+  when: false
+
 # current year for licenses
 year:
   type: int
@@ -138,6 +144,10 @@ _tasks:
   - command: 'git init'
     when: "{{ _copier_operation == 'copy' }}"
   - command: 'git branch -M main'
+    when: "{{ _copier_operation == 'copy' }}"
+  - command: >-
+      if command -v go >/dev/null 2>&1; then go mod tidy;
+      else echo "Go not found: run go mod tidy in the dev container, then commit go.mod and go.sum"; fi
     when: "{{ _copier_operation == 'copy' }}"
   - command: 'git add --all'
     when: "{{ _copier_operation == 'copy' }}"
