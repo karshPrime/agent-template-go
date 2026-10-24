@@ -29,7 +29,7 @@ RUN groupadd --gid 1000 user \
 
 # Switch to non-root user
 USER user
-WORKDIR /workspaces/{{ _folder_name }}
+WORKDIR /home/user
 
 COPY --from=golang:1.27.2-trixie@sha256:47667934874913a449b96faa7ef4777fa285d9ec29126ee80ed61c45b7cccf0e /usr/local/go /usr/local/go
 ENV PATH=$PATH:/usr/local/go/bin
