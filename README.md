@@ -22,6 +22,7 @@ $ copier copy --trust --vcs-ref=go git@github.com:karnull/templates path/to/proj
 ```
 * **Project Description:** Answer the Copier prompt with an optional plain‑text description of your project.
 * **Library Pack:** Optional selection of libraries to include in the project.
+* **Release Targets:** Platforms `./run.sh --release` builds for, or none. `windows-arm32` is not offered, as Go no longer supports it.
 * The `--trust` option is required because the template runs `git` commands.
 
 
@@ -50,3 +51,12 @@ GitHub Actions (`.github/workflows/ci.yml`) runs two jobs:
 * **tag:** on push to `main`, tags the merged commit with the version in `VERSION`, so existing projects can move to it with `copier update`. If the tag already exists, nothing is tagged.
 
 The workflow is read-only apart from the tag job, which needs write access to create the tag. It runs on `pull_request`, never `pull_request_target`, so code from a fork never runs with this repository's credentials. Actions are pinned to commit SHAs, and Renovate (`renovate.json`) proposes updates to them weekly.
+
+
+### Project Tasks
+
+Every generated project has a `run.sh` at its root:
+* `./run.sh --build` builds the binary into `build/`.
+* `./run.sh --format` formats the Go sources; `--format-dry-run` lists unformatted files and fails if there are any.
+* `./run.sh --test` runs the tests.
+* `./run.sh --release` cross-compiles one binary per release target into `dist/`.

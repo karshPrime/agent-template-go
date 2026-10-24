@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# Project tasks. CI runs --format-dry-run, --build, --test and --release.
+
+set -euo pipefail
+cd "$(dirname "$0")"
+
+name="{{ project_slug }}"
+release_targets=({% for target in release_targets if target != 'none' %}"{{ target }}"{% if not loop.last %} {% endif %}{% endfor %})
+
+usage() {
+    cat <<EOF
+Usage: ./run.sh <option>
+
+  --build            build the binary into build/
+  --format           format the Go sources in place
+  --format-dry-run   list unformatted Go sources and fail if there are any
+  --test             run the tests
+  --release          build every release target into dist/
+EOF
+}
+
+build() {
+    go build -o "build/$name" ./cmd
+}
+
+format() {
+    gofmt -w .
+}
+
+format_dry_run() {
+    local unformatted
+    unformatted=$(gofmt -l .)
+    if [ -n "$unformatted" ]; then
+        echo "These files need ./run.sh --format:" >&2
+        echo "$unformatted" >&2
+        return 1
+    fi
+}
+
+run_tests() {
+    go test ./...
+}
+
+go_platform() {
+    case "$1" in
+        windows-arm64)       echo "windows arm64" ;;
+        windows-x86)         echo "windows 386" ;;
+        windows-x64)         echo "windows amd64" ;;
+        linux-arm32)         echo "linux arm" ;;
+        linux-arm64)         echo "linux arm64" ;;
+        linux-x86)           echo "linux 386" ;;
+        linux-x64)           echo "linux amd64" ;;
+        macOS-intel)         echo "darwin amd64" ;;
+        macOS-apple-silicon) echo "darwin arm64" ;;
+        *) echo "Unknown release target: $1" >&2; return 1 ;;
+    esac
+}
+
+release() {
+    local target goos goarch suffix
+    rm -rf dist
+    mkdir -p dist
+    for target in "${release_targets[@]}"; do
+        read -r goos goarch <<< "$(go_platform "$target")"
+        suffix=""
+        if [ "$goos" = "windows" ]; then
+            suffix=".exe"
+        fi
+        echo "Building $target"
+        # GOARM only affects the 32-bit arm target, where 7 covers every current board
+        CGO_ENABLED=0 GOOS="$goos" GOARCH="$goarch" GOARM=7 \
+            go build -trimpath -o "dist/$name-$target$suffix" ./cmd
+    done
+}
+
+case "${1:-}" in
+    --build)          build ;;
+    --format)         format ;;
+    --format-dry-run) format_dry_run ;;
+    --test)           run_tests ;;
+    --release)        release ;;
+    -h|--help)        usage ;;
+    *)                usage >&2; exit 1 ;;
+esac
