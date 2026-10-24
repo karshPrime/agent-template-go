@@ -48,6 +48,29 @@ include_database:
   type: bool
   default: false
 
+# platforms run.sh --release builds for the GitHub release
+release_targets:
+  qmark: "\n >"
+  help: "Release Targets:"
+  type: str
+  multiselect: true
+  choices:
+    - "windows-arm64"
+    - "windows-x86"
+    - "windows-x64"
+    - "linux-arm32"
+    - "linux-arm64"
+    - "linux-x86"
+    - "linux-x64"
+    - "macOS-intel"
+    - "macOS-apple-silicon"
+    - "none"
+  default: ["none"]
+  validator: >-
+    {% if 'none' in release_targets and release_targets | length > 1 %}
+    "none" cannot be combined with other targets
+    {% endif %}
+
 
 #===============================================================================
 # Deaults
