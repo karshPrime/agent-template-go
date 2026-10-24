@@ -9,3 +9,4 @@
 * fix/project-builds: generated projects build, test and cross-compile out of the box, with a go.mod, gofmt-clean code, a pure Go SQLite driver and a dev container that installs Go.
 * chore/renovate-grouping: Renovate batches minor, patch and digest updates into one weekly pull request and reminds the reviewer to bump VERSION.
 * chore/ci-update: shared CI v1.1.1, with generated projects and this template both following the shared Renovate settings.
+* feature/makefile: generated projects ship a Makefile with build, format, format-dry-run, test and release targets in place of run.sh, with the release builds in scripts/release.sh, make in the dev container and the shared CI calling make.
