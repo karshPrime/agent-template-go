@@ -9,21 +9,21 @@ Copyright (c) {{ year }} Apache-2.0 license
 package routes
 
 import (
-    "net/http"
+	"net/http"
 
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 )
 
 // Register sets up all API routes.
 func Register(r *gin.Engine) {
-    api := r.Group("/api/v1")
-    {
-        api.GET("/example", getExample)
-    }
+	api := r.Group("/api/v1")
+	{
+		api.GET("/example", getExample)
+	}
 }
 
 func getExample(c *gin.Context) {
-    c.JSON(http.StatusOK, gin.H{
-        "message": "{{ project_name }}",
-    })
+	c.JSON(http.StatusOK, gin.H{
+		"message": "{{ project_name }}",
+	})
 }

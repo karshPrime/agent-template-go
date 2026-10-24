@@ -23,7 +23,7 @@ $ copier copy --trust --vcs-ref=go git@github.com:karnull/templates path/to/proj
 * **Project Description:** Answer the Copier prompt with an optional plain‑text description of your project.
 * **Library Pack:** Optional selection of libraries to include in the project.
 * **Release Targets:** Platforms `./run.sh --release` builds for, or none. `windows-arm32` is not offered, as Go no longer supports it.
-* The `--trust` option is required because the template runs `git` commands.
+* The `--trust` option is required because the template runs `git` and `go mod tidy`. Without Go installed, run `go mod tidy` in the dev container afterwards and commit `go.mod` and `go.sum`.
 
 
 ### Default Config

@@ -30,7 +30,7 @@ RUN groupadd --gid 1000 user \
 USER user
 WORKDIR /workspaces/{{ _folder_name }}
 
-RUN rm -rf /usr/local/go && tar -C /usr/local -xzf go1.26.4.linux-amd64.tar.gz
+COPY --from=golang:1.26.10-trixie@sha256:909771fef53e3dcb0950255f0c9a8b4728c3b841e61509c7b29b098de7ee02d4 /usr/local/go /usr/local/go
 ENV PATH=$PATH:/usr/local/go/bin
 RUN go version
 
