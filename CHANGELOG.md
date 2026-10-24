@@ -12,3 +12,4 @@
 * feature/makefile: generated projects ship a Makefile with build, format, format-dry-run, test and release targets in place of run.sh, with the release builds in scripts/release.sh, make in the dev container and the shared CI calling make.
 * feature/root-answers-file: generated projects keep their Copier answers in `.copier-go-answers.yml` at the root rather than in `.copier-generic-project/`; existing projects move the file once before their next update.
 * fix/dockerfile-workdir: copier update no longer conflicts on the Dockerfile; existing projects resolve it once on their next update.
+* fix/devcontainer-timezone: the dev container, and CI with it, starts on hosts that have no /etc/timezone.
