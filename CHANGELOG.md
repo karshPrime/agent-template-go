@@ -16,3 +16,4 @@
 * fix/bash-history-mount: shell history in the dev container persists between sessions.
 * feature/plain-version: VERSION holds a plain X.Y.Z here and in generated projects, with CI adding the v for tags; existing projects remove the v from VERSION once.
 * fix/empty-author: generated code passes make format-dry-run when no author is set in the Copier settings.
+* docs/readme: a shorter README with the right copy command, gh:karshosphere/template-go, and the first commit of a new project links to this template.
