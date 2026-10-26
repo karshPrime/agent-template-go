@@ -15,3 +15,4 @@
 * fix/devcontainer-timezone: the dev container, and CI with it, starts on hosts that have no /etc/timezone.
 * fix/bash-history-mount: shell history in the dev container persists between sessions.
 * feature/plain-version: VERSION holds a plain X.Y.Z here and in generated projects, with CI adding the v for tags; existing projects remove the v from VERSION once.
+* fix/empty-author: generated code passes make format-dry-run when no author is set in the Copier settings.
