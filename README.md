@@ -40,7 +40,8 @@ $ copier update --defaults --answers-file .copier-go-answers.yml
 
 Older projects need a one-off step first:
 * **Before 2.1.0:** move the answers file to the root with `git mv .copier-generic-project/.copier-go-answers.yml .copier-go-answers.yml`.
-* **Before 3.0.0:** drop the `v` from `VERSION` with `sed -i 's/^v//' VERSION`.
+
+Updating to 4.0.0 removes `VERSION`; the project's existing tags carry on as before.
 
 
 ## What a Project Gets
@@ -51,12 +52,12 @@ Older projects need a one-off step first:
   * `make test` runs the tests.
   * `make release` cross-compiles each release target into `dist/` with `scripts/release.sh`.
 * A dev container with Go and make.
-* The shared CI from [template-github-ci](https://github.com/karshosphere/template-github-ci): it runs the four make targets in the dev container, requires a `VERSION` bump on every pull request, and publishes a GitHub release on each merge to main.
-* `VERSION`, starting at `0.1.0`, and a `renovate.json` using the shared Renovate settings. The project owns both; updates never overwrite them.
+* The shared CI from [template-github-ci](https://github.com/karshosphere/template-github-ci): it runs the four make targets in the dev container, works out each release's version from the commit messages, and publishes a GitHub release on each merge to main.
+* A `renovate.json` using the shared Renovate settings. The project owns it; updates never overwrite it.
 
 
 ## Maintaining the Template
 
-* Bump `VERSION`, a plain `X.Y.Z`, on every branch: `Z` for fixes, `Y` for features and chores, `X` for changes that break `copier update` in existing projects. CI checks it and tags each merge to main `vX.Y.Z`.
-* Renovate keeps the pinned actions and images current, grouping minor updates into one weekly pull request. It never touches `VERSION`.
+* There is no `VERSION` file or changelog. CI works out each release's version from the commit messages: `X` for a change that breaks `copier update` in existing projects, marked with `!` after the type as in `feat!:`, `Y` for `feat:`, and `Z` for anything else. Each merge to main is published as a GitHub release tagged `vX.Y.Z`, with the pull request's description as its notes.
+* Renovate keeps the pinned actions and images current in one weekly pull request, which merges as a `Z` release with no other change.
 * Bring in a newer release of the shared CI from the repository root with `copier update -a .github/.copier-ci-answers.yml template`.
